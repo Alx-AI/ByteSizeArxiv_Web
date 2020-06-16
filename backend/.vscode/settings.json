@@ -1,0 +1,11 @@
+{
+    "python.pythonPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\Anaconda3_64\\python.exe",
+    "team.showWelcomeMessage": false,
+    "editor.formatOnSave": true,
+    "python.linting.pep8Enabled": true,
+    "python.linting.pylintPath": "pylint",
+    "python.linting.pylintArgs": ["--load-plugins","pylint_django"],
+    "python.linting.pylintEnabled": true,
+    "python.venvPath": "${workspaceFolder}/backend/env/Scripts/python.exe",
+    "oython.linting.pep8Args": ["--ignore=E501"]
+}

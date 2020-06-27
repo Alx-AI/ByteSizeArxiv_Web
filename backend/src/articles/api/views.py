@@ -1,6 +1,8 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from articles.models import Article
 from .serializer import ArticleSerializer
+import articles
+
 
 class ArticleListView(ListAPIView):
     #Here is where we make the view

@@ -42,8 +42,7 @@ INSTALLED_APPS = [
     'django_mysql',
 
     'articles',
-    'categories',
-    'subcategories'
+    'categories'
 ]
 
 MIDDLEWARE = [

@@ -8,4 +8,4 @@
     "python.linting.pylintEnabled": true,
     "python.venvPath": "${workspaceFolder}/backend/env/Scripts/python.exe",
     "oython.linting.pep8Args": ["--ignore=E501"]
-}
+}   

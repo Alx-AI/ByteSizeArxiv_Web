@@ -51,20 +51,27 @@ def queryByCat(Category):
     # Run through each entry, and print out information
     
     ##theDate = feed.entries[0].published[0:10]
-    #theDate = '2020-06-02'  
-    dates =['2020-05-31' ,'2020-06-01' ,'2020-06-02' ,'2020-06-03' ,'2020-06-04']
+    theDate = '2020-06-30'  
+    #dates =['2020-05-31' ,'2020-06-01' ,'2020-06-02' ,'2020-06-03' ,'2020-06-04']
     totalCorpus = []
-    for date in dates:
-        corpus_Entry = []
-        for entry in feed.entries:
-            print(entry.published)
-            if entry.published[0:10] == date:
-                print("added")
-                corpus_Entry.append(entry)
-        totalCorpus.append(corpus_Entry)
+    corpus_Entry = []
+    for entry in feed.entries:
+        print(entry.published)
+        if entry.published[0:10] == theDate:
+            print("added")
+            corpus_Entry.append(entry)
+    totalCorpus.append(corpus_Entry)
+    #for date in dates:
+    #    corpus_Entry = []
+    #    for entry in feed.entries:
+    #        print(entry.published)
+    #        if entry.published[0:10] == date:
+    #            print("added")
+    #            corpus_Entry.append(entry)
+    #    totalCorpus.append(corpus_Entry)
 
-
-    return totalCorpus, dates
+    return totalCorpus, theDate
+    #return totalCorpus, dates
 
 #Download the PDF's and save them as their Entry ID
 def saveTXT(corpusEntry,theDate,category):
@@ -76,15 +83,15 @@ def saveTXT(corpusEntry,theDate,category):
             library = Path(AbstractsDir) / category / theDate
             theID = paper.id.rsplit('/',1)[1]
             newFile = Path(library / (theID+".txt")) 
-            #print (newFile)
+            print (newFile)
             if not os.path.exists(newFile):
-                with open(newFile, 'r+', encoding = 'utf-8') as myfile:
+                with open(newFile, 'w+', encoding = 'utf-8') as myfile:
                     myfile.write(prePro(paper.title) + " ##### " +prePro(paper.summary))
             library = Path(AbstractsDir) / category
             newFile = Path(library / "Dictionary" / (theID+".txt")) 
             #print (newFile)
             if not os.path.exists(newFile):
-                with open(newFile, 'r+', encoding = 'utf-8') as myfile:
+                with open(newFile, 'w+', encoding = 'utf-8') as myfile:
                     myfile.write(prePro(paper.title) + " ##### " +prePro(paper.summary))
 
 #Preprocess the text into bullets
@@ -275,28 +282,35 @@ def main(category,dictionary_Dir):
             
     else:
         corpus_All,dates = queryByCat(category)
-        corpus_All.reverse()
-        dates.reverse()
-        for idx, corpusEntry in enumerate(corpus_All):
-            saveTXT(corpusEntry,dates[idx],category)
-        cv,tfidf_transformer = tfIDF(dictionary_Dir)
-        for idx,corpusEntry in enumerate(corpus_All):
-            tokenizedPath = Path(AbstractsDir)/ category / dates[idx] / "Tokenized"
-            if not os.path.exists(tokenizedPath):
-                os.makedirs(tokenizedPath)
-            tokenizeText.main(Path(AbstractsDir) / category / dates[idx] ,tokenizedPath)
-            compress(tokenizedPath, cv,tfidf_transformer)
+        if isinstance(dates, str) == False:
+            corpus_All.reverse()
+            dates.reverse()
+            for idx, corpusEntry in enumerate(corpus_All):
+                saveTXT(corpusEntry,dates[idx],category)
+            cv,tfidf_transformer = tfIDF(dictionary_Dir)
+            compress(Path(AbstractsDir) / category / dates[idx], cv,tfidf_transformer)
+        else:    
+            for idx, corpusEntry in enumerate(corpus_All):
+                saveTXT(corpusEntry,dates,category)
+            cv,tfidf_transformer = tfIDF(dictionary_Dir)
+            compress(Path(AbstractsDir) / category / dates, cv,tfidf_transformer)
+        #for idx,corpusEntry in enumerate(corpus_All):
+        #    tokenizedPath = Path(AbstractsDir)/ category / dates[idx] / "Tokenized"
+        #    if not os.path.exists(tokenizedPath):
+        #        os.makedirs(tokenizedPath)
+        #    tokenizeText.main(Path(AbstractsDir) / category / dates[idx] ,tokenizedPath)
+        #    compress(tokenizedPath, cv,tfidf_transformer)
             #print (corpusAbstract)
             #return corpusEntry
 
 if __name__ == "__main__":
     #Set location of saved abstracts
-    AbstractsDir = r'C:\Users\Al\Documents\ByteSizeArxiv\Abstracts'
+    AbstractsDir = r'C:\Users\Al\Documents\ByteSizeArxiv\Website\Abstracts'
     #Set date 
     #TheDate = "2020-06-01"
     #Set category
     #See Categories in Categories.txt, cs.LG = Machine Learning
     #Category = 'cs.LG'
     Category = 'cs.CL'
-    dictionary_Dir = Path(r'C:\Users\Al\Documents\ByteSizeArxiv\Abstracts') / Category / "Dictionary"
+    dictionary_Dir = Path(r'C:\Users\Al\Documents\ByteSizeArxiv\Website\Abstracts') / Category / "Dictionary"
     main(Category,dictionary_Dir)

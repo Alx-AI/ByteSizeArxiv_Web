@@ -16,7 +16,7 @@ const CustomLayout = (props) => {
         </Menu>
       </Header>
       <Layout>
-        <Sider width={200} className="site-layout-background">
+        <Sider width={400} className="site-layout-background">
           <Menu
             mode="inline"
             defaultSelectedKeys={['1']}

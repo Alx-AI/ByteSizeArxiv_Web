@@ -51,27 +51,30 @@ def queryByCat(Category):
     # Run through each entry, and print out information
     
     ##theDate = feed.entries[0].published[0:10]
-    theDate = '2020-06-30'  
-    #dates =['2020-05-31' ,'2020-06-01' ,'2020-06-02' ,'2020-06-03' ,'2020-06-04']
+    #dates = '2020-06-30'  
+    dates =['2020-07-01' ,'2020-06-30' ,'2020-06-29' ,'2020-06-28' ,'2020-06-27']
     totalCorpus = []
-    corpus_Entry = []
-    for entry in feed.entries:
-        print(entry.published)
-        if entry.published[0:10] == theDate:
-            print("added")
-            corpus_Entry.append(entry)
-    totalCorpus.append(corpus_Entry)
-    #for date in dates:
-    #    corpus_Entry = []
-    #    for entry in feed.entries:
-    #        print(entry.published)
-    #        if entry.published[0:10] == date:
-    #            print("added")
-    #            corpus_Entry.append(entry)
-    #    totalCorpus.append(corpus_Entry)
+    
+    if isinstance(dates,str):
+        corpus_Entry = []
+        for entry in feed.entries:
+            print(entry.published)
+            if entry.published[0:10] == dates:
+                print("added")
+                corpus_Entry.append(entry)
+        totalCorpus.append(corpus_Entry)
+    
+    else:   
+        for date in dates:
+            corpus_Entry = []
+            for entry in feed.entries:
+                print(entry.published)
+                if entry.published[0:10] == date:
+                    print("added")
+                    corpus_Entry.append(entry)
+            totalCorpus.append(corpus_Entry)
 
-    return totalCorpus, theDate
-    #return totalCorpus, dates
+    return totalCorpus, dates
 
 #Download the PDF's and save them as their Entry ID
 def saveTXT(corpusEntry,theDate,category):
@@ -287,13 +290,13 @@ def main(category,dictionary_Dir):
             dates.reverse()
             for idx, corpusEntry in enumerate(corpus_All):
                 saveTXT(corpusEntry,dates[idx],category)
-            cv,tfidf_transformer = tfIDF(dictionary_Dir)
-            compress(Path(AbstractsDir) / category / dates[idx], cv,tfidf_transformer)
+                cv,tfidf_transformer = tfIDF(dictionary_Dir)
+                compress(Path(AbstractsDir) / category / dates[idx], cv,tfidf_transformer)
         else:    
             for idx, corpusEntry in enumerate(corpus_All):
                 saveTXT(corpusEntry,dates,category)
-            cv,tfidf_transformer = tfIDF(dictionary_Dir)
-            compress(Path(AbstractsDir) / category / dates, cv,tfidf_transformer)
+                cv,tfidf_transformer = tfIDF(dictionary_Dir)
+                compress(Path(AbstractsDir) / category / dates, cv,tfidf_transformer)
         #for idx,corpusEntry in enumerate(corpus_All):
         #    tokenizedPath = Path(AbstractsDir)/ category / dates[idx] / "Tokenized"
         #    if not os.path.exists(tokenizedPath):

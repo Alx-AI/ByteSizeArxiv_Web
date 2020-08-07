@@ -40,9 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'django_mysql',
-
-    'articles',
-    'categories'
+    'summarized_articles',
 ]
 
 MIDDLEWARE = [

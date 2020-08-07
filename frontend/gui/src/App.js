@@ -7,7 +7,8 @@ import 'antd/dist/antd.css';
 import CustomLayour from './containers/Layout';
 import renderEmpty from 'antd/lib/config-provider/renderEmpty';
 import CustomLayout from './containers/Layout';
-import ArticleList from './containers/ArticleListView'
+import ArticleList from './containers/ArticleListView';
+import CSLGList from './containers/CSLGListView';
 
 class App extends Component {
   render() {
